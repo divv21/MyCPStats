@@ -86,12 +86,38 @@ class _MyCpStatsState extends State<MyCpStats> {
     DocumentReference documentReference = FirebaseFirestore.instance.collection("MyContests").
     doc(contestName);
 
+    documentReference.get().then((datasnapshot) {
+    print(datasnapshot['contestName']);
+    print(datasnapshot['contestRank']);
+    print(datasnapshot['myRating']);
+    print(datasnapshot['qSolved']);
+    print(datasnapshot['qUpsolved']);
+    print(datasnapshot['myLearnings']);
+    });
   }
   updateData() {
-    print('updated');
+    DocumentReference documentReference = FirebaseFirestore.instance.collection("MyContests").
+    doc(contestName);
+    Map<String, dynamic> contests = {
+      "contestName": contestName,
+      "myLearnings": myLearnings,
+      "contestRank": contestRank,
+      "myRating": myRating,
+      "qSolved": qSolved,
+      "qUpsolved": qUpsolved,
+    };
+
+    documentReference.set(contests).whenComplete( () {
+      print("$contestName updated");
+    });
   }
   deleteData() {
-    print('deleted');
+    DocumentReference documentReference = FirebaseFirestore.instance.collection("MyContests").
+    doc(contestName);
+
+    documentReference.delete().whenComplete(() {
+      print('$contestName deleted');
+    });
   }
   @override
   Widget build(BuildContext context) {
